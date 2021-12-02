@@ -1,0 +1,64 @@
+{
+  "tests": [
+    {
+      "name": "Unit Tests - Testing your Application: CapletDomestic",
+      "setup": "",
+      "run": "bash -c \"set -o pipefail; mvn -q -B -Dtest=SimpleLognormalCrossCurrencyModelAssignmentTest#testCapletDomestic -Dorg.slf4j.simpleLogger.defaultLogLevel=ERROR test | grep -vF [ERROR]\"",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 2
+    },
+    {
+      "name": "Unit Tests - Testing your Application: CapletForeign",
+      "setup": "",
+      "run": "bash -c \"set -o pipefail; mvn -q -B -Dtest=SimpleLognormalCrossCurrencyModelAssignmentTest#testCapletForeign -Dorg.slf4j.simpleLogger.defaultLogLevel=ERROR test | grep -vF [ERROR]\"",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 2
+    },
+    {
+      "name": "Unit Tests - Testing your Application: CapletQuanto",
+      "setup": "",
+      "run": "bash -c \"set -o pipefail; mvn -q -B -Dtest=SimpleLognormalCrossCurrencyModelAssignmentTest#testCapletQuanto -Dorg.slf4j.simpleLogger.defaultLogLevel=ERROR test | grep -vF [ERROR]\"",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 2
+    },
+    {
+      "name": "Unit Tests - Testing your Application: Caplet Domestic In Advance",
+      "setup": "",
+      "run": "bash -c \"set -o pipefail; mvn -q -B -Dtest=SimpleLognormalCrossCurrencyModelAssignmentTest#testCapletDomesticInAdvance -Dorg.slf4j.simpleLogger.defaultLogLevel=ERROR test | grep -vF [ERROR]\"",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 2
+    },
+    {
+      "name": "Unit Tests - Testing your Application: Caplet Foreign In Advance",
+      "setup": "",
+      "run": "bash -c \"set -o pipefail; mvn -q -B -Dtest=SimpleLognormalCrossCurrencyModelAssignmentTest#testCapletForeignInAdvance -Dorg.slf4j.simpleLogger.defaultLogLevel=ERROR test | grep -vF [ERROR]\"",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 2
+    },
+    {
+      "name": "Unit Tests - Testing your Application: Caplet Quanto In Advance",
+      "setup": "",
+      "run": "bash -c \"set -o pipefail; mvn -q -B -Dtest=SimpleLognormalCrossCurrencyModelAssignmentTest#testCapletQuantoInAdvance -Dorg.slf4j.simpleLogger.defaultLogLevel=ERROR test | grep -vF [ERROR]\"",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 2
+    }
+  ]
+}
