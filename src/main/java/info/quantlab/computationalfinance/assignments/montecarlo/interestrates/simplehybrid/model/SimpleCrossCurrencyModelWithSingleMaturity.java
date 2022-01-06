@@ -19,29 +19,33 @@ public class SimpleCrossCurrencyModelWithSingleMaturity implements SimpleCrossCu
 	private double periodStart;
 	private double periodEnd;
 	private double domesticZeroBond;
-	private double foreignZeroBond;	
+	private double foreignZeroBond;
 
 	private BrownianMotion brownianMotion;
 
 	private transient MonteCarloProcess process;
 
-	public SimpleCrossCurrencyModelWithSingleMaturity(
-			double initialValueDomesticForwardRate, double initialValueForeignForwardRate, double initialValueFX,
-			double volatilityDomestic, double volatilityForeign, double volatiltiyFXForward, double correlationDomFor,
-			double correlationFXDomenstic, double correlationFXForeign, double periodStart, double periodEnd, double domesticZeroBond, double foreignZeroBond,
-			BrownianMotion brownianMotion) {
+	public SimpleCrossCurrencyModelWithSingleMaturity(double initialValueDomesticForwardRate,
+			double initialValueForeignForwardRate, double initialValueFX, double volatilityDomestic,
+			double volatilityForeign, double volatiltiyFXForward, double correlationDomFor,
+			double correlationFXDomenstic, double correlationFXForeign, double periodStart, double periodEnd,
+			double domesticZeroBond, double foreignZeroBond, BrownianMotion brownianMotion) {
 		super();
 		this.periodStart = periodStart;
 		this.periodEnd = periodEnd;
 		this.domesticZeroBond = domesticZeroBond;
-		this.foreignZeroBond = foreignZeroBond;		
+		this.foreignZeroBond = foreignZeroBond;
 		this.brownianMotion = brownianMotion;
 
-		LognormalProcessModel lognormalProcessModel = null; // TODO: Create an object of your process model here
-	
+		LognormalProcessModel lognormalProcessModel = new LognormalSimpleCrossCurrencyProcessModel(periodStart,
+				periodEnd, domesticZeroBond, initialValueDomesticForwardRate, initialValueForeignForwardRate,
+				initialValueFX * foreignZeroBond / domesticZeroBond, volatilityDomestic, volatilityForeign,
+				volatiltiyFXForward, correlationDomFor, correlationFXDomenstic, correlationFXForeign);
+
 		ProcessModel processModel = new ProcessModelFromLognormalProcessModel(lognormalProcessModel);
 
-		process = new EulerSchemeFromProcessModel(processModel, brownianMotion);		
+		process = new EulerSchemeFromProcessModel(processModel, brownianMotion);
+
 	}
 
 	private RandomVariable getProcessValue(double time, int componentIndex) {
@@ -59,8 +63,30 @@ public class SimpleCrossCurrencyModelWithSingleMaturity implements SimpleCrossCu
 
 	@Override
 	public RandomVariable getFXRate(int currency, double time) {
-		// TODO: Implement the forward rate here (depending on the arguments)
-		throw new RuntimeException("Methode not implemented");
+		if (currency == 0) {
+			return new Scalar(1.0);
+		} else if (currency == 1) {
+			if (time == 0) {
+				RandomVariable forwardFXRate = getProcessValue(time, 2 /* componentIndex */);
+
+				return forwardFXRate.div(foreignZeroBond).mult(domesticZeroBond);
+			} else if (time == periodStart) {
+				RandomVariable forwardFXRate = getProcessValue(time, 2 /* componentIndex */);
+				RandomVariable domesticForwardRate = getProcessValue(time, 0 /* componentIndex */);
+				RandomVariable foreignForwardRate = getProcessValue(time, 1 /* componentIndex */);
+
+				return forwardFXRate.mult(foreignForwardRate.mult(periodEnd - periodStart).add(1.0))
+						.div(domesticForwardRate.mult(periodEnd - periodStart).add(1.0));
+			} else if (time == periodEnd) {
+				RandomVariable forwardFXRate = getProcessValue(time, 2 /* componentIndex */);
+
+				return forwardFXRate;
+			} else {
+				throw new IllegalArgumentException("Time not supported: " + time);
+			}
+		} else {
+			throw new IllegalArgumentException();
+		}
 	}
 
 	@Override
@@ -70,7 +96,7 @@ public class SimpleCrossCurrencyModelWithSingleMaturity implements SimpleCrossCu
 		} catch (CalculationException e) {
 			throw new RuntimeException(e);
 		}
-	}	
+	}
 
 	@Override
 	public int getNumberOfPaths() {
@@ -108,7 +134,8 @@ public class SimpleCrossCurrencyModelWithSingleMaturity implements SimpleCrossCu
 	}
 
 	@Override
-	public MonteCarloSimulationModel getCloneWithModifiedData(Map<String, Object> dataModified) throws CalculationException {
+	public MonteCarloSimulationModel getCloneWithModifiedData(Map<String, Object> dataModified)
+			throws CalculationException {
 		throw new UnsupportedOperationException();
-	}	
+	}
 }
