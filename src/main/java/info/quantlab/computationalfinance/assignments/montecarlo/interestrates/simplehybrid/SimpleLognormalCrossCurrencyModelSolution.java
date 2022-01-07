@@ -47,11 +47,6 @@ public class SimpleLognormalCrossCurrencyModelSolution implements SimpleLognorma
 			double correlationFXDomenstic, double correlationFXForeign, double periodStart, double maturity,
 			double domesticZeroBond, double foreignZeroBond, BrownianMotion brownianMotion) {
 
-		/*
-		 * Return your implementation of an SimpleCrossCurrencyModel. Note: You may just
-		 * complete the stub implementation which we provide. If you implement a
-		 * different class, change the line below to your implementation.
-		 */
 		return new SimpleCrossCurrencyModelWithSingleMaturity(initialValueDomesticForwardRate,
 				initialValueForeignForwardRate, initialValueFX, volatilityDomestic, volatilityForeign,
 				volatiltiyFXForward, correlationDomFor, correlationFXDomenstic, correlationFXForeign, periodStart,
@@ -78,11 +73,6 @@ public class SimpleLognormalCrossCurrencyModelSolution implements SimpleLognorma
 	public CrossCurrencyProduct getGeneralizedCaplet(int currency, boolean isQuanto, double fixingTime,
 			double periodStart, double periodEnd, double paymentTime, double strike) {
 
-		/*
-		 * Return your implementation of an CrossCurrencyProduct. Note: You may just
-		 * complete the stub implementation which we provide. If you implement a
-		 * different class, change the line below to your implementation.
-		 */
 		return new GeneralizedCaplet(currency, isQuanto, fixingTime, periodStart, periodEnd, paymentTime, strike);
 
 	}
